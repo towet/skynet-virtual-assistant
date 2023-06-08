@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.min.css'>
+  </head>
+  <body style="background: url({{ url_for('static', filename='back.jpg') }}) no-repeat center center fixed; background-size: cover; z-index: 1;">
+    <div class="chat" style="background-image: url(''); ; background-size: cover;background-position: left">
+      <div class="chat-title">
+        <h1 style="color: rgb(23, 211, 224); font-family: Verdana, Geneva, Tahoma, sans-serif;">FRANK.AI </h1>
+        <h2 style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color: rgb(230, 202, 18); text-align: center;" >Predict the Future</h2>
+        <figure class="avatar">
+            <img src="/static/robo.jpg">
+        </figure>
+        <div class="r-nav">
+          <ul>
+        
+          </ul>
+        </div>
+      </div>
+<div class="messages" id="chat-window">
+  {% for message in messages %}
+    {% if message.type == 'user' %}
+      <div class="message message-personal" style="text-align: right; color: rgb(8, 223, 230); border: 2px solid rgb(10, 232, 248);">
+        <img src="/static/human.jpg" style="border-radius: 50%; width: 30px; height: 30px; margin-left: 10px;">
+        <p>{{ message.text }}</p>
+      </div>
+    {% else %}
+      <div class="message" style="text-align: left; color: rgb(255, 255, 255); border: 2px solid rgb(21, 226, 195);">
+        <img src="/static/robo.jpg" style="border-radius: 50%; width: 30px; height: 30px; margin-right: 10px;">
+        <p>{{ message.text }}</p>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+<div class="message-box" style="padding: 30px;" id="message-box-container">
+  <form action="{{ url_for('get_answer') }}" method="post">
+    <input type="text" class="message-input" placeholder="Ask a question.." name="question" style="font-size: 16px;">
+    <button type="submit" class="message-submit sound-on-click" style="background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(255,94,247,1) 17.8%, rgba(2,245,255,1) 100.2% ); font-size: 16px;">Send</button>
+  </form>
+</div>
+
+
+ 
+  
+
+
+      
+      <div class="bg"></div>
+      
+      <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js'></script>
+      
+      <script>
+        $(document).ready(function() {
+          // Initialize custom scrollbar
+          $(".messages").mCustomScrollbar({
+            theme: "3d-dark",
+            scrollInertia: 200
+          });
+      
+          // Scroll to bottom of chat window on page load
+          $("#chat-window").scrollTop($("#chat-window")[0].scrollHeight);
+      
+          // Scroll to bottom of chat window on new message received
+          window.setTimeout(function() {
+            var chatWindow = $("#chat-window");
+            var shouldScroll = chatWindow.scrollTop() + chatWindow.innerHeight() === chatWindow[0].scrollHeight;
+            chatWindow.mCustomScrollbar("scrollTo", "bottom", {
+              scrollInertia: 200,
+              callbacks: shouldScroll ? null : function() {
+                // Trigger sound and vibration notifications for new message
+              }
+            });
+          }, 500);
+        });
+        var messageBox = $(".message-box");
+         messageBox.scrollTop(messageBox[0].scrollHeight);
+         $(".message-submit").click(function() {
+         messageBox.scrollTop(messageBox[0].scrollHeight);
+});
+const messageBoxContainer = document.getElementById("message-box-container");
+messageBoxContainer.scrollTop = messageBoxContainer.scrollHeight;
+
+      </script>
+      
+</html>
